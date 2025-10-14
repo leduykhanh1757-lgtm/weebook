@@ -23,7 +23,7 @@ function initializeOrderSuccess() {
 }
 
 function loadOrderDetails(orderId) {
-    const orders = JSON.parse(localStorage.getItem('bookself-orders')) || [];
+    const orders = JSON.parse(localStorage.getItem('bookshelf-orders')) || [];
     const order = orders.find(o => o.id == orderId);
     
     if (!order) {
