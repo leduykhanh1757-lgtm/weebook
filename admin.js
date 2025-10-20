@@ -28,7 +28,8 @@ function initializeAdminDashboard() {
 
 // ========== ADMIN NAVIGATION ========== //
 function initializeAdminNavigation() {
-    const navItems = document.querySelectorAll('.admin-nav-item');
+    // Match the actual markup class 'nav-item' from admin.html, not 'admin-nav-item'
+    const navItems = document.querySelectorAll('.nav-item');
     
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -641,13 +642,19 @@ function deletePromotion(promotionId) {
 
 // ========== CHARTS INITIALIZATION ========== //
 function initializeCharts() {
+    // Guard if Chart is not yet loaded
+    if (typeof window.Chart === 'undefined') {
+        // Retry shortly after external script loads
+        setTimeout(initializeCharts, 200);
+        return;
+    }
     initializeRevenueChart();
     initializeTopBooksChart();
 }
 
 function initializeRevenueChart() {
     const ctx = document.getElementById('revenueChart');
-    if (!ctx) return;
+    if (!ctx || typeof window.Chart === 'undefined') return;
     
     // Sample data for demo
     const monthlyData = [1200000, 1500000, 1800000, 1600000, 2000000, 2200000];
@@ -688,7 +695,7 @@ function initializeRevenueChart() {
 
 function initializeTopBooksChart() {
     const ctx = document.getElementById('topBooksChart');
-    if (!ctx) return;
+    if (!ctx || typeof window.Chart === 'undefined') return;
     
     if (!window.BookDatabase) return;
     
