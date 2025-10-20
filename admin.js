@@ -2,11 +2,11 @@
 // Complete admin management system for BookSelf
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Check admin authentication
+    // Kiểm tra quyền admin trước khi khởi tạo dashboard
     if (!requireAdmin()) {
         return;
     }
-    
+
     console.log('Admin dashboard loaded');
     initializeAdminDashboard();
 });
@@ -28,15 +28,17 @@ function initializeAdminDashboard() {
 
 // ========== ADMIN NAVIGATION ========== //
 function initializeAdminNavigation() {
-    const navItems = document.querySelectorAll('.admin-nav-item');
-    
+    // Đồng bộ với markup: các item dùng class 'nav-item'
+    const navItems = document.querySelectorAll('.admin-nav .nav-item');
+
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
+            // Cho phép dùng hash nhưng vẫn chặn reload
             e.preventDefault();
             const section = item.dataset.section;
             showSection(section);
-            
-            // Update active nav item
+
+            // Cập nhật active
             navItems.forEach(nav => nav.classList.remove('active'));
             item.classList.add('active');
         });

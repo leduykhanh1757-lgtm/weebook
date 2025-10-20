@@ -102,10 +102,11 @@ function handleLogin(e) {
             sessionStorage.setItem('bookshelf-user', JSON.stringify(adminSession));
         }
 
-        showNotification('Đăng nhập thành công (Administrator)!', 'success');
-        setTimeout(() => {
-            window.location.href = 'index.html'; // hoặc 'admin.html' nếu có
-        }, 1000);
+    showNotification('Đăng nhập thành công (Administrator)!', 'success');
+    setTimeout(() => {
+        // Chuyển thẳng tới trang admin sau khi đăng nhập admin
+        window.location.href = 'admin.html';
+    }, 1000);
         return;
     }
 
@@ -316,13 +317,21 @@ function togglePassword(inputId) {
 
 // ========== USER SESSION MANAGEMENT ========== //
 function getCurrentUser() {
-    const userSession = localStorage.getItem('bookshelf-user') || sessionStorage.getItem('bookshelf-user');
+    // Ưu tiên đọc theo khóa chính thống 'bookshelf-user'
+    let userSession = localStorage.getItem('bookshelf-user') || sessionStorage.getItem('bookshelf-user');
+    // Tương thích ngược với một số trang dùng nhầm khóa 'bookself-user'
+    if (!userSession) {
+        userSession = localStorage.getItem('bookself-user') || sessionStorage.getItem('bookself-user');
+    }
     return userSession ? JSON.parse(userSession) : null;
 }
 
 function logout() {
+    // Xóa cả hai khóa để tránh lệch trạng thái giữa các trang
     localStorage.removeItem('bookshelf-user');
     sessionStorage.removeItem('bookshelf-user');
+    localStorage.removeItem('bookself-user');
+    sessionStorage.removeItem('bookself-user');
     showNotification('Đã đăng xuất thành công!', 'success');
     setTimeout(() => {
         window.location.href = 'index.html';

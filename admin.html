@@ -470,7 +470,8 @@
         </div>
     </div>
 
-    <script src="admin.js"></script>
+    <!-- Load Chart.js before admin.js to avoid 'Chart is not defined' -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>

@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load chatbot (only if not on excluded pages)
+    // Loại trừ trang admin khỏi việc tiêm header/footer/chatbot để tránh nhảy về trang chủ
     const excludedPages = ['auth.html', 'admin.html', 'checkout.html'];
     const currentPage = window.location.pathname.split('/').pop();
     
@@ -288,11 +289,14 @@ function updateAccountMenu() {
 
 // Logout function
 function logout() {
+    // Ưu tiên dùng hàm logout toàn cục trong auth.js nếu có
+    if (typeof window.logout === 'function') {
+        return window.logout();
+    }
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userName');
     updateAccountMenu();
-    // Redirect to home page
     window.location.href = 'index.html';
 }
 
