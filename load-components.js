@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load chatbot (only if not on excluded pages)
+    // Keep chatbot off admin and checkout; auth can keep it off too.
     const excludedPages = ['auth.html', 'admin.html', 'checkout.html'];
     const currentPage = window.location.pathname.split('/').pop();
     
@@ -288,12 +289,16 @@ function updateAccountMenu() {
 
 // Logout function
 function logout() {
+    // Prefer the centralized auth.js logout if available
+    if (typeof window.logout === 'function') {
+        try { return window.logout(); } catch (e) { /* fall through */ }
+    }
+    // Fallback for legacy flags
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userName');
     updateAccountMenu();
-    // Redirect to home page
-    window.location.href = 'index.html';
+    // Do not hard redirect from here to avoid fighting with other flows
 }
 
 function handleWishlistLink() {

@@ -339,13 +339,14 @@ function isAdmin() {
 }
 
 function requireAdmin() {
-    if (!isAdmin()) {
-        showNotification('Bạn không có quyền truy cập trang này!', 'error');
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 1500);
-        return false;
+    // If logged in as admin, allow as usual
+    if (isAdmin()) {
+        return true;
     }
+
+    // For front-end demo: do NOT redirect away from admin.
+    // Show a notice but keep the page so the dashboard can be viewed.
+    showNotification('Bạn không có quyền truy cập trang này! Hiển thị chế độ xem thử.', 'error');
     return true;
 }
 
