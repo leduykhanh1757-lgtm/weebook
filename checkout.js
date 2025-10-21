@@ -47,6 +47,36 @@ function loadUserInformation() {
         document.getElementById('fullName').value = currentUser.name || '';
         document.getElementById('phone').value = currentUser.phone || '';
         document.getElementById('email').value = currentUser.email || '';
+
+        // Autofill address details from user profile if available
+        const addressField = document.getElementById('address');
+        if (addressField && currentUser.address) {
+            addressField.value = currentUser.address;
+        }
+
+        // If profile has structured location data, preselect them as well
+        const citySelect = document.getElementById('city');
+        const districtSelect = document.getElementById('district');
+        if (citySelect && currentUser.city) {
+            citySelect.value = currentUser.city;
+            // Refresh districts list based on selected city
+            if (typeof updateDistricts === 'function') {
+                updateDistricts();
+            }
+        }
+        if (districtSelect && currentUser.district) {
+            districtSelect.value = currentUser.district;
+        }
+    } else {
+        // Ensure fields are blank if no user is present
+        const nameEl = document.getElementById('fullName');
+        const phoneEl = document.getElementById('phone');
+        const emailEl = document.getElementById('email');
+        const addressEl = document.getElementById('address');
+        if (nameEl) nameEl.value = '';
+        if (phoneEl) phoneEl.value = '';
+        if (emailEl) emailEl.value = '';
+        if (addressEl) addressEl.value = '';
     }
 }
 
